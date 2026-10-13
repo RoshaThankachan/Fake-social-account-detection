@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detection of Fake Social Media Accounts Using Behavioral Features | ML Project</title>
+  <meta name="description" content="A Machine Learning mini-project by Rosha Thankachan using Random Forest classification to identify suspicious social media accounts with 90.83% accuracy.">
+  <meta name="keywords" content="Fake Account Detection, Machine Learning, Random Forest, Social Media Security, Behavioral Features, Rosha Thankachan">
+  <meta name="author" content="Rosha Thankachan">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Detection of Fake Social Media Accounts Using Behavioral Features">
+  <meta property="og:description" content="Interactive ML Showcase & Real-Time Account Authenticity Predictor by Rosha Thankachan.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Ambient Grid Background -->
+  <div class="bg-grid"></div>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container">
+      <a href="#" class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">SocialFakeGuard</span>
+          <span class="brand-tag">RandomForest ML</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#detector" class="nav-link">Live Predictor</a></li>
+          <li><a href="#results" class="nav-link">Model Visualizations</a></li>
+          <li><a href="#metrics" class="nav-link">Evaluation</a></li>
+          <li><a href="#dataset" class="nav-link">Dataset</a></li>
+          <li><a href="#author" class="nav-link">Author</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-cta-group">
+        <a href="https://github.com/RoshaThankachan" target="_blank" rel="noopener noreferrer" class="github-btn">
+          <i class="fa-brands fa-github"></i>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="overview">
+      <div class="container">
+        <div class="badge-pill">
+          <span class="badge-dot"></span>
+          <span>Random Forest Classification • 90.83% Accuracy</span>
+        </div>
+
+        <h1 class="hero-title">
+          Detection of Fake Social Media Accounts <br>
+          <span class="gradient-text">Using Behavioral Features</span>
+        </h1>
+
+        <p class="hero-description">
+          A machine learning mini-project that identifies potentially fake, automated, and malicious social media accounts by analyzing username morphology, engagement ratios, posting velocity, and behavioral footprints across a dataset of 3,000 records.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#detector" class="btn btn-primary">
+            <i class="fa-solid fa-microchip"></i>
+            <span>Try Live Detector</span>
+          </a>
+          <a href="#results" class="btn btn-secondary">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>View Actual Project Visualizations</span>
+          </a>
+          <a href="https://github.com/RoshaThankachan" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            <i class="fa-brands fa-github"></i>
+            <span>GitHub Repository</span>
+          </a>
+        </div>
+
+        <!-- KPI Performance Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-value cyan">90.83%</div>
+            <div class="kpi-label">Reported Accuracy</div>
+            <div class="kpi-sub">Held-out test set (N=600)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-value green">92.43%</div>
+            <div class="kpi-label">Model Precision</div>
+            <div class="kpi-sub">Low false positive rate (14 FP)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-value indigo">80.66%</div>
+            <div class="kpi-label">Fake Account Recall</div>
+            <div class="kpi-sub">171 of 212 fakes detected</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-value purple">86.15%</div>
+            <div class="kpi-label">F1-Score</div>
+            <div class="kpi-sub">Harmonic mean balance</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-value cyan">3,000</div>
+            <div class="kpi-label">Dataset Records</div>
+            <div class="kpi-sub">21 Selected Features</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Live Predictor -->
+    <section id="detector">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Real-Time ML Inference</span>
+          <h2 class="section-title">Interactive Account Authenticity Predictor</h2>
+          <p class="section-desc">
+            Test custom accounts or choose a pre-configured persona. The browser executes client-side Random Forest decision trees trained on behavioral attributes.
+          </p>
+        </div>
+
+        <div class="predictor-wrapper">
+          <!-- Left Column: Form & Sliders -->
+          <div class="panel-card">
+            <!-- Preset Persona Selector -->
+            <div class="presets-section">
+              <div class="presets-label">
+                <i class="fa-solid fa-bolt"></i> Quick Personas Presets:
+              </div>
+              <div class="preset-buttons">
+                <button type="button" class="preset-btn active" data-preset="spambot">
+                  <i class="fa-solid fa-robot"></i> Spam Bot Farm
+                </button>
+                <button type="button" class="preset-btn" data-preset="genuine">
+                  <i class="fa-solid fa-user-check"></i> Genuine Creator
+                </button>
+                <button type="button" class="preset-btn" data-preset="lurker">
+                  <i class="fa-solid fa-eye"></i> Suspicious Lurker
+                </button>
+                <button type="button" class="preset-btn" data-preset="student">
+                  <i class="fa-solid fa-graduation-cap"></i> Casual Student
+                </button>
+              </div>
+            </div>
+
+            <!-- Username Pattern Analysis -->
+            <div class="feature-category">
+              <div class="category-header">
+                <i class="fa-solid fa-signature"></i>
+                <span>1. Username Morphology (Top Model Predictor)</span>
+              </div>
+              <div class="form-group full-width">
+                <label for="input-username" class="form-label">
+                  <span>Username Handle</span>
+                  <span class="value-badge">Auto-Calculates 5 Heuristics</span>
+                </label>
+                <input type="text" id="input-username" class="form-control" value="promo_deal_89420" placeholder="e.g. user_98243 or alex_miller">
+                <div class="username-chips">
+                  <span class="chip" id="chip-length">Len: <strong>16</strong></span>
+                  <span class="chip" id="chip-digits">Digits: <strong>5</strong></span>
+                  <span class="chip alert" id="chip-ratio">Digit Ratio: <strong>31%</strong></span>
+                  <span class="chip" id="chip-special">Special: <strong>2</strong></span>
+                  <span class="chip" id="chip-repeat">Repeats: <strong>0</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Profile & Graph Attributes -->
+            <div class="feature-category">
+              <div class="category-header">
+                <i class="fa-solid fa-address-card"></i>
+                <span>2. Profile & Social Graph Ratios</span>
+              </div>
+              <div class="form-group-grid">
+                <div class="form-group">
+                  <div class="switch-group">
+                    <span class="switch-label">Profile Picture</span>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="toggle-has_profile_pic" class="sync-toggle">
+                      <span class="slider-switch"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="switch-group">
+                    <span class="switch-label">Verified Badge</span>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="toggle-verified" class="sync-toggle">
+                      <span class="slider-switch"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="switch-group">
+                    <span class="switch-label">Suspicious Bio Link</span>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="toggle-suspicious_links_in_bio" class="sync-toggle" checked>
+                      <span class="slider-switch"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="switch-group">
+                    <span class="switch-label">Random Username Pattern</span>
+                    <label class="toggle-switch">
+                      <input type="checkbox" id="toggle-username_randomness" class="sync-toggle" checked>
+                      <span class="slider-switch"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="slider-bio_length" class="form-label">
+                    <span>Bio Length (Chars)</span>
+                    <span class="value-badge" id="val-bio_length">15</span>
+                  </label>
+                  <input type="range" id="slider-bio_length" class="range-slider sync-slider" min="0" max="250" value="15">
+                </div>
+
+                <div class="form-group">
+                  <label for="slider-account_age_days" class="form-label">
+                    <span>Account Age (Days)</span>
+                    <span class="value-badge" id="val-account_age_days">14</span>
+                  </label>
+                  <input type="range" id="slider-account_age_days" class="range-slider sync-slider" min="1" max="5000" value="14">
+                </div>
+
+                <div class="form-group">
+                  <label for="slider-followers" class="form-label">
+                    <span>Followers Count</span>
+                    <span class="value-badge" id="val-followers">28</span>
+                  </label>
+                  <input type="range" id="slider-followers" class="range-slider sync-slider" min="0" max="10000" value="28">
+                </div>
+
+                <div class="form-group">
+                  <label for="slider-following" class="form-label">
+                    <span>Following Count</span>
+                    <span class="value-badge" id="val-following">1950</span>
+                  </label>
+                  <input type="range" id="slider-following" class="range-slider sync-slider" min="0" max="10000" value="1950">
+                </div>
+
+                <div class="form-group full-width">
+                  <label class="form-label">
+                    <span>Follower / Following Ratio</span>
+                    <span class="value-badge" id="val-ratio">0.01</span>
+                  </label>
+                  <p style="font-size: 0.78rem; color: var(--text-subtle);">Computed automatically from followers and following metrics.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Behavioral & Content Metrics -->
+            <div class="feature-category">
+              <div class="category-header">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>3. Activity, Spam & Similarity Velocity</span>
+              </div>
+              <div class="form-group-grid">
+                <div class="form-group">
+                  <label for="slider-posts" class="form-label">
+                    <span>Total Posts</span>
+                    <span class="value-badge" id="val-posts">180</span>
+                  </label>
+                  <input type="range" id="slider-posts" class="range-slider sync-slider" min="0" max="1500" value="180">
+                </div>
+
+                <div class="form-group">
+                  <label for="slider-posts_per_day" class="form-label">
+                    <span>Posts per Day</span>
+                    <span class="value-badge" id="val-posts_per_day">12.8</span>
+                  </label>
+                  <input type="range" id="slider-posts_per_day" class="range-slider sync-slider" min="0.0" max="30.0" step="0.1" value="12.8">
+                </div>
+
+                <div class="form-group">
+                  <label for="slider-caption_similarity_score" class="form-label">
+                    <span>Caption Similarity (0 - 1)</span>
+                    <span class="value-badge" id="val-caption_similarity_score">0.92</span>
+                  </label>
+                  <input type="range" id="slider-caption_similarity_score" class="range-slider sync-slider" min="0.0" max="1.0" step="0.01" value="0.92">
+                </div>
+
+                <div class="form-group">
+                  <label for="slider-content_similarity_score" class="form-label">
+                    <span>Content Similarity (0 - 1)</span>
+                    <span class="value-badge" id="val-content_similarity_score">0.89</span>
+                  </label>
+                  <input type="range" id="slider-content_similarity_score" class="range-slider sync-slider" min="0.0" max="1.0" step="0.01" value="0.89">
+                </div>
+
+                <div class="form-group">
+                  <label for="slider-follow_unfollow_rate" class="form-label">
+                    <span>Follow / Unfollow Rate</span>
+                    <span class="value-badge" id="val-follow_unfollow_rate">460</span>
+                  </label>
+                  <input type="range" id="slider-follow_unfollow_rate" class="range-slider sync-slider" min="0" max="500" value="460">
+                </div>
+
+                <div class="form-group">
+                  <label for="slider-spam_comments_rate" class="form-label">
+                    <span>Spam Comments Rate</span>
+                    <span class="value-badge" id="val-spam_comments_rate">185</span>
+                  </label>
+                  <input type="range" id="slider-spam_comments_rate" class="range-slider sync-slider" min="0" max="200" value="185">
+                </div>
+
+                <div class="form-group">
+                  <label for="slider-generic_comment_rate" class="form-label">
+                    <span>Generic Comments Rate</span>
+                    <span class="value-badge" id="val-generic_comment_rate">135</span>
+                  </label>
+                  <input type="range" id="slider-generic_comment_rate" class="range-slider sync-slider" min="0" max="200" value="135">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Live Verdict Card -->
+          <div class="result-card">
+            <div id="verdict-badge" class="result-verdict-badge fake">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <span>SUSPICIOUS / FAKE</span>
+            </div>
+
+            <!-- Animated SVG Gauge -->
+            <div class="gauge-container">
+              <svg class="gauge-svg" viewBox="0 0 160 160">
+                <circle class="gauge-bg" cx="80" cy="80" r="70"></circle>
+                <circle id="gauge-bar" class="gauge-bar" cx="80" cy="80" r="70" stroke-dasharray="439.82" stroke-dashoffset="60" stroke="var(--color-fake)"></circle>
+              </svg>
+              <div class="gauge-text">
+                <span id="gauge-pct" class="gauge-pct">94%</span>
+                <span id="gauge-subtext" class="gauge-subtext">Fake Probability</span>
+              </div>
+            </div>
+
+            <!-- Risk Factor Explanations -->
+            <div class="risk-summary-box">
+              <div class="risk-summary-title">
+                <span>Key Behavioral Indicators</span>
+                <i class="fa-solid fa-circle-info"></i>
+              </div>
+              <ul id="risk-factors-list" class="factor-list">
+                <!-- Dynamically generated list items -->
+              </ul>
+            </div>
+
+            <!-- Decision Forest Vote Split -->
+            <div class="tree-vote-bar">
+              <div class="vote-labels">
+                <span id="vote-fake-lbl">Fake: 94.0%</span>
+                <span id="vote-gen-lbl">Genuine: 6.0%</span>
+              </div>
+              <div class="vote-progress">
+                <div id="fake-vote-fill" class="vote-fill-fake" style="width: 94%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Project Visualizations & Actual Outputs Gallery -->
+    <section id="results">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Real Empirical Results</span>
+          <h2 class="section-title">Actual Project Outputs & Visualizations</h2>
+          <p class="section-desc">
+            All visualizations displayed below were generated directly from the 3,000-record dataset using the project's Random Forest model and evaluation pipeline.
+          </p>
+        </div>
+
+        <div class="gallery-grid">
+          <!-- 1. Confusion Matrix -->
+          <div class="viz-card">
+            <div class="viz-img-box">
+              <img src="assets/images/confusion_matrix.png" alt="Confusion Matrix" class="viz-img">
+              <div class="viz-zoom-hint"><i class="fa-solid fa-expand"></i> Click to Zoom</div>
+            </div>
+            <div class="viz-content">
+              <span class="viz-badge">Evaluation Matrix</span>
+              <h3 class="viz-title">Confusion Matrix</h3>
+              <p class="viz-desc">
+                Classification outcomes on the held-out test set (N=600). Demonstrates 374 True Genuine and 171 True Fake predictions with only 14 False Positives.
+              </p>
+              <div class="viz-stats-row">
+                <div class="viz-stat-item"><span class="lbl">TN</span> 374</div>
+                <div class="viz-stat-item"><span class="lbl">FP</span> 14</div>
+                <div class="viz-stat-item"><span class="lbl">FN</span> 41</div>
+                <div class="viz-stat-item"><span class="lbl">TP</span> 171</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Feature Importance -->
+          <div class="viz-card">
+            <div class="viz-img-box">
+              <img src="assets/images/feature_importance.png" alt="Feature Importance" class="viz-img">
+              <div class="viz-zoom-hint"><i class="fa-solid fa-expand"></i> Click to Zoom</div>
+            </div>
+            <div class="viz-content">
+              <span class="viz-badge">Model Explainability</span>
+              <h3 class="viz-title">Feature Importance Analysis</h3>
+              <p class="viz-desc">
+                Gini impurity importance across all 21 features. Highlights <code>digit_ratio</code> (21.15%), <code>digits_count</code> (18.97%), and <code>username_length</code> (17.01%) as primary discriminators.
+              </p>
+              <div class="viz-stats-row">
+                <div class="viz-stat-item"><span class="lbl">Top 1</span> digit_ratio (21.1%)</div>
+                <div class="viz-stat-item"><span class="lbl">Top 2</span> digits_count (19.0%)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Model Performance Bar Chart -->
+          <div class="viz-card">
+            <div class="viz-img-box">
+              <img src="assets/images/model_performance.png" alt="Model Performance" class="viz-img">
+              <div class="viz-zoom-hint"><i class="fa-solid fa-expand"></i> Click to Zoom</div>
+            </div>
+            <div class="viz-content">
+              <span class="viz-badge">Classification Metrics</span>
+              <h3 class="viz-title">Evaluation Metrics Comparison</h3>
+              <p class="viz-desc">
+                Summary of the four primary classification metrics: Accuracy (90.83%), Precision (92.43%), Recall (80.66%), and F1-Score (86.15%).
+              </p>
+              <div class="viz-stats-row">
+                <div class="viz-stat-item"><span class="lbl">Accuracy</span> 90.83%</div>
+                <div class="viz-stat-item"><span class="lbl">Precision</span> 92.43%</div>
+                <div class="viz-stat-item"><span class="lbl">Recall</span> 80.66%</div>
+                <div class="viz-stat-item"><span class="lbl">F1</span> 86.15%</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. ROC Curve -->
+          <div class="viz-card">
+            <div class="viz-img-box">
+              <img src="assets/images/roc_curve.png" alt="Receiver Operating Characteristic Curve" class="viz-img">
+              <div class="viz-zoom-hint"><i class="fa-solid fa-expand"></i> Click to Zoom</div>
+            </div>
+            <div class="viz-content">
+              <span class="viz-badge">Threshold Trade-off</span>
+              <h3 class="viz-title">ROC Curve (AUC = 0.957)</h3>
+              <p class="viz-desc">
+                True Positive Rate versus False Positive Rate across classification thresholds, illustrating strong discriminative separation against random guessing.
+              </p>
+              <div class="viz-stats-row">
+                <div class="viz-stat-item"><span class="lbl">ROC AUC</span> 0.9570</div>
+                <div class="viz-stat-item"><span class="lbl">Baseline</span> 0.5000</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Target Distribution -->
+          <div class="viz-card">
+            <div class="viz-img-box">
+              <img src="assets/images/target_distribution.png" alt="Target Distribution" class="viz-img">
+              <div class="viz-zoom-hint"><i class="fa-solid fa-expand"></i> Click to Zoom</div>
+            </div>
+            <div class="viz-content">
+              <span class="viz-badge">Dataset Composition</span>
+              <h3 class="viz-title">Class Distribution (is_fake)</h3>
+              <p class="viz-desc">
+                Balance between genuine accounts (1,941 records, 64.7%) and fake accounts (1,059 records, 35.3%) preserved using stratified train-test splitting.
+              </p>
+              <div class="viz-stats-row">
+                <div class="viz-stat-item"><span class="lbl">Genuine</span> 1,941 (64.7%)</div>
+                <div class="viz-stat-item"><span class="lbl">Fake</span> 1,059 (35.3%)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Missing Values -->
+          <div class="viz-card">
+            <div class="viz-img-box">
+              <img src="assets/images/missing_values.png" alt="Missing Value Distribution" class="viz-img">
+              <div class="viz-zoom-hint"><i class="fa-solid fa-expand"></i> Click to Zoom</div>
+            </div>
+            <div class="viz-content">
+              <span class="viz-badge">Preprocessing</span>
+              <h3 class="viz-title">Missing Values & Imputation</h3>
+              <p class="viz-desc">
+                Distribution of missing observations across attributes prior to median imputation. All missing numerical columns were cleanly imputed.
+              </p>
+              <div class="viz-stats-row">
+                <div class="viz-stat-item"><span class="lbl">Method</span> Median Imputation</div>
+                <div class="viz-stat-item"><span class="lbl">Post-Missing</span> 0.0%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Deep-Dive Metrics & Confusion Matrix Breakdown -->
+    <section id="metrics">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Performance Verification</span>
+          <h2 class="section-title">Model Evaluation Metrics Table</h2>
+          <p class="section-desc">
+            Granular breakdown of classification performance across classes and validation splits.
+          </p>
+        </div>
+
+        <div class="eval-details-grid">
+          <!-- Left: Classification Report Table -->
+          <div class="table-card">
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: #fff;">
+              <i class="fa-solid fa-table-list" style="color: var(--accent-indigo); margin-right: 8px;"></i>
+              Classification Report (Test Set N=600)
+            </h3>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Class</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1-Score</th>
+                    <th>Support</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Genuine (0)</strong></td>
+                    <td>0.90</td>
+                    <td>0.96</td>
+                    <td>0.93</td>
+                    <td>388</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Fake (1)</strong></td>
+                    <td>0.92</td>
+                    <td>0.81</td>
+                    <td>0.86</td>
+                    <td>212</td>
+                  </tr>
+                  <tr style="border-top: 2px solid var(--border-light);">
+                    <td><strong>Overall Accuracy</strong></td>
+                    <td colspan="3" style="text-align: center; font-weight: 700; color: var(--accent-cyan);">90.83%</td>
+                    <td>600</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Macro Average</strong></td>
+                    <td>0.91</td>
+                    <td>0.89</td>
+                    <td>0.90</td>
+                    <td>600</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Weighted Average</strong></td>
+                    <td>0.91</td>
+                    <td>0.91</td>
+                    <td>0.91</td>
+                    <td>600</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Right: Confusion Matrix Interactive Block -->
+          <div class="table-card">
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; color: #fff;">
+              <i class="fa-solid fa-border-all" style="color: var(--accent-cyan); margin-right: 8px;"></i>
+              Interactive Confusion Matrix Grid
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">
+              Actual rows vs Predicted columns for 600 test samples.
+            </p>
+
+            <div class="cm-interactive-grid">
+              <div class="cm-cell tn">
+                <div class="cm-val" style="color: #34d399;">374</div>
+                <div class="cm-name">True Genuine (TN)</div>
+                <div class="cm-sub">Correctly identified genuine</div>
+              </div>
+              <div class="cm-cell fp">
+                <div class="cm-val" style="color: #f87171;">14</div>
+                <div class="cm-name">False Fake (FP)</div>
+                <div class="cm-sub">Genuine flagged as fake</div>
+              </div>
+              <div class="cm-cell fn">
+                <div class="cm-val" style="color: #fb923c;">41</div>
+                <div class="cm-name">False Genuine (FN)</div>
+                <div class="cm-sub">Fake accounts missed</div>
+              </div>
+              <div class="cm-cell tp">
+                <div class="cm-val" style="color: #38bdf8;">171</div>
+                <div class="cm-name">True Fake (TP)</div>
+                <div class="cm-sub">Correctly identified fakes</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature Importance Rankings Bars -->
+        <div class="table-card" style="margin-top: 2rem;">
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; color: #fff;">
+            <i class="fa-solid fa-ranking-star" style="color: var(--accent-cyan); margin-right: 8px;"></i>
+            Top 10 Influential Behavioral Features (Gini Importance)
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+            Username syntax rules (digit ratio, digit count, username length) represent over 57% of total tree splitting power.
+          </p>
+
+          <div class="feature-rank-grid">
+            <div>
+              <div class="feature-bar-item">
+                <div class="feature-bar-label">
+                  <span>1. digit_ratio</span>
+                  <span style="font-family: var(--font-mono); color: var(--accent-cyan);">21.15%</span>
+                </div>
+                <div class="feature-bar-track"><div class="feature-bar-fill" style="width: 100%;"></div></div>
+              </div>
+              <div class="feature-bar-item">
+                <div class="feature-bar-label">
+                  <span>2. digits_count</span>
+                  <span style="font-family: var(--font-mono); color: var(--accent-cyan);">18.97%</span>
+                </div>
+                <div class="feature-bar-track"><div class="feature-bar-fill" style="width: 89%;"></div></div>
+              </div>
+              <div class="feature-bar-item">
+                <div class="feature-bar-label">
+                  <span>3. username_length</span>
+                  <span style="font-family: var(--font-mono); color: var(--accent-cyan);">17.01%</span>
+                </div>
+                <div class="feature-bar-track"><div class="feature-bar-fill" style="width: 80%;"></div></div>
+              </div>
+              <div class="feature-bar-item">
+                <div class="feature-bar-label">
+                  <span>4. special_char_count</span>
+                  <span style="font-family: var(--font-mono); color: var(--accent-cyan);">6.30%</span>
+                </div>
+                <div class="feature-bar-track"><div class="feature-bar-fill" style="width: 30%;"></div></div>
+              </div>
+              <div class="feature-bar-item">
+                <div class="feature-bar-label">
+                  <span>5. repeat_char_count</span>
+                  <span style="font-family: var(--font-mono); color: var(--accent-cyan);">3.08%</span>
+                </div>
+                <div class="feature-bar-track"><div class="feature-bar-fill" style="width: 15%;"></div></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="feature-bar-item">
+                <div class="feature-bar-label">
+                  <span>6. caption_similarity_score</span>
+                  <span style="font-family: var(--font-mono); color: var(--accent-cyan);">2.88%</span>
+                </div>
+                <div class="feature-bar-track"><div class="feature-bar-fill" style="width: 14%;"></div></div>
+              </div>
+              <div class="feature-bar-item">
+                <div class="feature-bar-label">
+                  <span>7. follow_unfollow_rate</span>
+                  <span style="font-family: var(--font-mono); color: var(--accent-cyan);">2.84%</span>
+                </div>
+                <div class="feature-bar-track"><div class="feature-bar-fill" style="width: 13.5%;"></div></div>
+              </div>
+              <div class="feature-bar-item">
+                <div class="feature-bar-label">
+                  <span>8. account_age_days</span>
+                  <span style="font-family: var(--font-mono); color: var(--accent-cyan);">2.76%</span>
+                </div>
+                <div class="feature-bar-track"><div class="feature-bar-fill" style="width: 13%;"></div></div>
+              </div>
+              <div class="feature-bar-item">
+                <div class="feature-bar-label">
+                  <span>9. content_similarity_score</span>
+                  <span style="font-family: var(--font-mono); color: var(--accent-cyan);">2.74%</span>
+                </div>
+                <div class="feature-bar-track"><div class="feature-bar-fill" style="width: 12.9%;"></div></div>
+              </div>
+              <div class="feature-bar-item">
+                <div class="feature-bar-label">
+                  <span>10. posts_per_day</span>
+                  <span style="font-family: var(--font-mono); color: var(--accent-cyan);">2.70%</span>
+                </div>
+                <div class="feature-bar-track"><div class="feature-bar-fill" style="width: 12.8%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dataset & Sample Test Explorer -->
+    <section id="dataset">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Data & Methodology</span>
+          <h2 class="section-title">Dataset Structure & Test Samples</h2>
+          <p class="section-desc">
+            Explore records from the test dataset. Select any sample account to immediately populate and test in the live detector.
+          </p>
+        </div>
+
+        <!-- Dataset Summary Stats -->
+        <div class="dataset-summary-row">
+          <div class="dataset-summary-box">
+            <div class="summary-icon"><i class="fa-solid fa-database"></i></div>
+            <div class="summary-details">
+              <h4>3,000</h4>
+              <p>Total Profiles</p>
+            </div>
+          </div>
+          <div class="dataset-summary-box">
+            <div class="summary-icon"><i class="fa-solid fa-list-check"></i></div>
+            <div class="summary-details">
+              <h4>21</h4>
+              <p>Engineered Features</p>
+            </div>
+          </div>
+          <div class="dataset-summary-box">
+            <div class="summary-icon"><i class="fa-solid fa-shield"></i></div>
+            <div class="summary-details">
+              <h4>1,941</h4>
+              <p>Genuine (64.7%)</p>
+            </div>
+          </div>
+          <div class="dataset-summary-box">
+            <div class="summary-icon"><i class="fa-solid fa-bug"></i></div>
+            <div class="summary-details">
+              <h4>1,059</h4>
+              <p>Fake (35.3%)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sample Explorer Table -->
+        <div class="table-card">
+          <div class="table-filter-bar">
+            <div class="search-input-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="sample-search-input" placeholder="Search by handle or platform...">
+            </div>
+            <div class="filter-pills">
+              <button type="button" class="filter-pill sample-filter-pill active" data-filter="all">All Accounts</button>
+              <button type="button" class="filter-pill sample-filter-pill" data-filter="genuine">Genuine Only</button>
+              <button type="button" class="filter-pill sample-filter-pill" data-filter="fake">Fake Only</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Row ID</th>
+                  <th>Username</th>
+                  <th>Platform</th>
+                  <th>Ground Truth</th>
+                  <th>Model Prediction</th>
+                  <th>Confidence</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="sample-table-body">
+                <!-- Dynamically populated from assets/forest_model_data.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ML Pipeline Architecture Flow -->
+        <div class="section-header" style="margin-top: 4rem; margin-bottom: 2rem;">
+          <span class="section-subtitle">System Architecture</span>
+          <h2 class="section-title">End-to-End Machine Learning Pipeline</h2>
+        </div>
+
+        <div class="pipeline-steps">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <h4>Data Ingestion</h4>
+            <p>Loading 3,000 records from Excel corpus spanning Twitter, Instagram, and Facebook profiles.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <h4>Missing Value Imputation</h4>
+            <p>Median imputation across incomplete numerical features preserving real feature distribution.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <h4>Feature Selection</h4>
+            <p>21 behavioral, social graph, posting frequency, and username heuristic features selected.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <h4>Stratified Split</h4>
+            <p>80:20 train-test partition (2,400 training / 600 testing) ensuring class ratio preservation.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">5</div>
+            <h4>Random Forest Model</h4>
+            <p>100 decision trees ensemble trained using Gini impurity and random state 42 reproducibility.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">6</div>
+            <h4>Multi-Metric Evaluation</h4>
+            <p>Evaluation with Confusion Matrix, ROC-AUC (0.957), Precision (92.43%), and F1-score (86.15%).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Author & Attribution -->
+    <section id="author">
+      <div class="container">
+        <div class="author-card-wrap">
+          <div class="author-avatar">
+            <i class="fa-solid fa-user-graduate"></i>
+          </div>
+          <div class="author-info">
+            <h3>Rosha Thankachan</h3>
+            <span class="author-id-badge">MCA2549 • Machine Learning Mini-Project</span>
+            <p>
+              Master of Computer Applications student presenting research on detecting fake social media accounts via behavioral features, lexical heuristics, and tree-based ensemble learning.
+            </p>
+            <div class="author-links">
+              <a href="https://github.com/RoshaThankachan" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.88rem;">
+                <i class="fa-brands fa-github"></i>
+                <span>GitHub: RoshaThankachan</span>
+              </a>
+              <button type="button" id="copy-clone-btn" class="btn btn-secondary" style="padding: 8px 18px; font-size: 0.88rem;" data-clipboard="git clone https://github.com/RoshaThankachan/fake-social-account-detection.git">
+                <i class="fa-regular fa-clone"></i>
+                <span>Copy Clone URL</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Image Modal Zoom -->
+  <div class="modal-overlay" id="image-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">Visualization Preview</h4>
+        <button type="button" class="modal-close-btn" id="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <img src="" alt="Zoomed Visualization" class="modal-img" id="modal-img">
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h5>Detection of Fake Social Media Accounts</h5>
+          <p style="margin-top: 8px; line-height: 1.6;">
+            A machine learning mini-project that evaluates account authenticity through profile and behavioral features using Random Forest classification. Developed by Rosha Thankachan.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h5>Quick Navigation</h5>
+          <ul class="footer-links">
+            <li><a href="#detector">Live Predictor</a></li>
+            <li><a href="#results">Evaluation Visualizations</a></li>
+            <li><a href="#metrics">Confusion Matrix</a></li>
+            <li><a href="#dataset">Dataset Explorer</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Repository</h5>
+          <ul class="footer-links">
+            <li><a href="https://github.com/RoshaThankachan" target="_blank" rel="noopener noreferrer">GitHub Profile</a></li>
+            <li><a href="scripts/train_and_evaluate.py">Training Script</a></li>
+            <li><a href="models/model_metadata.json">Model Metadata</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Rosha Thankachan. Educational & Experimental Machine Learning Project.</p>
+        <p style="font-size: 0.78rem; color: var(--text-subtle);">Disclaimer: Predictions represent statistical estimates based on dataset patterns and are not definitive proof of account authenticity.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/forest_model_data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
